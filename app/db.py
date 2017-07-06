@@ -3,8 +3,7 @@
 import os
 import json
 import datetime
-from sqlalchemy import create_engine
-from sqlalchemy import Table, Column, Integer, Numeric, String, ForeignKey, DateTime, Boolean
+from sqlalchemy import Table, Column, Integer, Numeric, String, ForeignKey, DateTime, Boolean, MetaData, create_engine
 
 #import environment variables from cloud foundry
 def find_vcap():
@@ -17,15 +16,16 @@ def find_vcap():
 
 #use default values for local database
 def create_local():
+    engine = create_engine('sqlite:///:memory:')
+    metadata = tables()
+    metadata.create_all(engine)
 
 
-#determine backend and return connection obj
-def create_engine():
-    #determine what the backend
+
 
 #define table schema
 def tables():
-
+    metadata = MetaData()
     reservations = Table('reservations', metadata,
             Column('confirmation_id', String(10), primary_key=true),
             Column('user_id', Integer(), nullable=False)
@@ -39,7 +39,7 @@ def tables():
         Column('last_name', String(50), nullable=False),
         Column('password', String(25), nullable=False))
 
+    return metadata
+
+#initate_db based on backend config
 def initate_db():
-
-
-def create_schema():

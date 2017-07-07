@@ -3,7 +3,7 @@
 import os
 import json
 import datetime
-from sqlalchemy import Table, Column, Integer, Numeric, String, ForeignKey, DateTime, Boolean, MetaData, create_engine
+from sqlalchemy import Table, Column, Integer, Numeric, String, ForeignKey, DateTime, Boolean, MetaData, create_engine, insert, select
 
 #import environment variables from cloud foundry
 def find_vcap():
@@ -15,13 +15,14 @@ def find_vcap():
 
 
 #use default values for local database
-def create_local():
+def create_db_local():
     engine = create_engine('sqlite:///:memory:')
     metadata = tables()
     metadata.create_all(engine)
 
-
-
+#open connection to PCF services
+def create_db():
+    
 
 #define table schema
 def tables():
@@ -43,3 +44,4 @@ def tables():
 
 #initate_db based on backend config
 def initate_db():
+    #test to see if the table of reservations and users exist. if not, create tables

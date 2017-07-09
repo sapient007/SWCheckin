@@ -10,7 +10,7 @@ from sqlalchemy import (
     DateTime, Boolean, MetaData, create_engine, insert, select)
 
 
-class DataAccessLayer:
+class DataAccessLayer(object):
 
     # import environment variables from cloud foundry
     local = False
@@ -67,7 +67,3 @@ class DataAccessLayer:
 
         self.connection = self.engine.connect()
         return self.connection
-
-
-dal = DataAccessLayer()
-dal.connect_to_db()

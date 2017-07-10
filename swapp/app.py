@@ -1,7 +1,7 @@
 from __future__ import print_function
-from swcheckin.db import DataAccessLayer
+from swapp.db import DataAccessLayer
 from datetime import datetime
-from sqlalchemy.sql import select, insert
+from sqlalchemy.sql import select, insert, delete
 
 
 dal = DataAccessLayer()
@@ -24,13 +24,30 @@ def add_reservation(confirmationId, firstName, lastName, flightDateTime):
         checkedIn = False
     )
     print(str(ins))
-    db_connection.execute(ins)
+    result = db_connection.execute(ins)
+    print(result.rowcount)
+
+def del_reservation(confirmationId):
+    if confirmationId is None:
+        #nothing happens
+        print("nothing happens here")
+    elif confirmationId == "All":
+        #delete everything from reservations Table
+        delete_all = delete(dal.reservations)
+        result = db_connection.execute(delete_all)
+        print("reservations now has (" + str(result.rowcount) + ") rows")
+    else:
+        #delete just the confirmationID
+        delete_single = delete(dal.reservations).where(reservations.c.confirmation_id == confirmationId)
+        result = db_connection.execute(delete_single)
+        print("reservations now has (" + str(result.rowcount) + ") rows")
 
 
 
 def insert_dummydata():
-    for count in range(10):
-        add_reservation('{}{}'.format('testconfirmation', str(count)), 'testname', 'testname',  datetime.now())
+    del_reservation("All")
+    #for count in range(10):
+        #add_reservation('{}{}'.format('testconfirmation', str(count)), 'testname', 'testname',  datetime.now())
 
 
 def main():
